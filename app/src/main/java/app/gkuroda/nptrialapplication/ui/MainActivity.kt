@@ -1,7 +1,8 @@
-package app.gkuroda.nptrialapplication
+package app.gkuroda.nptrialapplication.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import app.gkuroda.nptrialapplication.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
