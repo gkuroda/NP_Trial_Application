@@ -10,4 +10,6 @@ class ApplicationModule {
     @Provides
     fun context(application: TrialApplication): Context = application
 
+    @Provides
+    fun testText():String = "test"
 }

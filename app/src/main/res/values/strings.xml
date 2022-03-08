@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NP Trial Application</string>
+    <string name="title_poker">Poker</string>
+    <string name="title_history">履歴</string>
 </resources>
