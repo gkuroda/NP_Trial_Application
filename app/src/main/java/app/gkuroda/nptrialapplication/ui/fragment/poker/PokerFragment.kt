@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.gkuroda.nptrialapplication.dagger.viewModel.ViewModelFactory
 import app.gkuroda.nptrialapplication.databinding.FragmentPokerBinding
 import dagger.android.support.AndroidSupportInjection
@@ -19,6 +20,8 @@ class PokerFragment : Fragment() {
 
     private lateinit var binding: FragmentPokerBinding
 
+    lateinit var recyclerViewAdapter: PokerHandRequestRecyclerViewAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,8 +31,19 @@ class PokerFragment : Fragment() {
         binding = FragmentPokerBinding.inflate(inflater)
 
         viewModel = viewModelFactory.get(this)
-
+        setUpRecyclerView()
         return binding.root
     }
+
+    fun setUpRecyclerView() {
+        recyclerViewAdapter = PokerHandRequestRecyclerViewAdapter(requireContext())
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = recyclerViewAdapter
+        }
+        recyclerViewAdapter.setPokerItemList()
+        recyclerViewAdapter.notifyDataSetChanged()
+    }
+
 
 }
