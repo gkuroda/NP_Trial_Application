@@ -32,10 +32,12 @@ class PokerFragment : Fragment() {
 
         viewModel = viewModelFactory.get(this)
         setUpRecyclerView()
+        setUpButtonEvent()
+
         return binding.root
     }
 
-    fun setUpRecyclerView() {
+    private fun setUpRecyclerView() {
         recyclerViewAdapter = PokerHandRequestRecyclerViewAdapter(requireContext())
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -43,6 +45,13 @@ class PokerFragment : Fragment() {
         }
         recyclerViewAdapter.setPokerItemList()
         recyclerViewAdapter.notifyDataSetChanged()
+    }
+
+    private fun setUpButtonEvent() {
+        binding.addCellButton.setOnClickListener {
+            recyclerViewAdapter.addOrder()
+            recyclerViewAdapter.notifyDataSetChanged()
+        }
     }
 
 

@@ -61,6 +61,11 @@ class PokerHandRequestRecyclerViewAdapter(
         itemList = baseList
     }
 
+    fun addOrder() {
+        orderSize++
+        setPokerItemList()
+    }
+
     enum class PokerHandViewType(val type: Int) {
         ITEM_CELL(1),
         HR_CELL(2);
