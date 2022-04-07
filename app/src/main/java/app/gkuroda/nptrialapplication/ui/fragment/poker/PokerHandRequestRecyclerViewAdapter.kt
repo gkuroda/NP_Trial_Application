@@ -6,13 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.gkuroda.nptrialapplication.databinding.ViewHrBinding
 import app.gkuroda.nptrialapplication.databinding.ViewPokerItemCellBinding
+import app.gkuroda.nptrialapplication.model.PokerCardSetItem
 
 class PokerHandRequestRecyclerViewAdapter(
     context: Context
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), PokerItemEvent {
     var orderSize: Int = 1
 
-    var itemList: List<Pair<PokerHandViewType, Int>> = emptyList()
+    var itemList: List<Triple<PokerHandViewType, Int, Int>> = emptyList()
+    var orderList: MutableList<PokerCardSetItem> = mutableListOf()
 
     private val inflater = LayoutInflater.from(context)
 
@@ -42,7 +44,8 @@ class PokerHandRequestRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is PokerItemViewHolder -> {
-                holder.bind(itemList[position].second)
+                val item = itemList[position]
+                holder.bind(item.second, item.third, this)
             }
             is HrItemViewHolder -> holder.bind()
         }
@@ -51,13 +54,15 @@ class PokerHandRequestRecyclerViewAdapter(
     override fun getItemCount(): Int = itemList.size
 
     fun setPokerItemList() {
-        val baseList = mutableListOf<Pair<PokerHandViewType, Int>>()
-        for (i in 1..orderSize) {
-            for (count in 1..5) {
-                baseList.add(Pair(PokerHandViewType.ITEM_CELL, count))
-            }
-            baseList.add(Pair(PokerHandViewType.HR_CELL, 0))
+        val baseList = mutableListOf<Triple<PokerHandViewType, Int, Int>>()
+
+        for (count in 1..5) {
+            baseList.add(Triple(PokerHandViewType.ITEM_CELL, count, orderSize))
         }
+        baseList.add(Triple(PokerHandViewType.HR_CELL, 0, orderSize))
+
+        orderList.add(PokerCardSetItem(orderSize))
+
         itemList = baseList
     }
 
@@ -65,6 +70,18 @@ class PokerHandRequestRecyclerViewAdapter(
         orderSize++
         setPokerItemList()
     }
+
+    override fun onTextChange(orderNumber: Int, cardNumber: Int, cardValue: CharSequence) {
+        orderList = orderList.map {
+            if (it.orderNumber == orderNumber) {
+                it.setCard(cardNumber, cardValue.toString())
+            } else {
+                it
+            }
+        }.toMutableList()
+        orderList
+    }
+
 
     enum class PokerHandViewType(val type: Int) {
         ITEM_CELL(1),
@@ -80,16 +97,15 @@ class PokerHandRequestRecyclerViewAdapter(
     class PokerItemViewHolder(
         val binding: ViewPokerItemCellBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(cardNumber: Int) {
+        fun bind(cardNumber: Int, orderNumber: Int, pokerItemEvent: PokerItemEvent) {
             binding.apply {
                 itemNumber = cardNumber
                 itemNumberText = "値$cardNumber"
+                itemOrderNumber = orderNumber
+                event = pokerItemEvent
             }
         }
 
-        fun getCardValue(): Pair<Int, String> {
-            return Pair(binding.itemNumber, binding.pokerCardValueEditText.text.toString())
-        }
     }
 
     class HrItemViewHolder(

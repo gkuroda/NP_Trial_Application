@@ -1,6 +1,7 @@
 package app.gkuroda.nptrialapplication.ui.fragment.poker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,13 @@ class PokerFragment : Fragment() {
         binding.addCellButton.setOnClickListener {
             recyclerViewAdapter.addOrder()
             recyclerViewAdapter.notifyDataSetChanged()
+        }
+
+        binding.requestResultButton.setOnClickListener {
+            for (i in 0..binding.recyclerView.childCount) {
+                Log.e("tag", "${binding.recyclerView.findViewHolderForLayoutPosition(i)}")
+            }
+
         }
     }
 

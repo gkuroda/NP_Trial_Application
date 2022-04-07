@@ -11,8 +11,14 @@
             name="itemNumberText"
             type="String" />
         <variable
+            name="itemOrderNumber"
+            type="int" />
+        <variable
             name="isError"
             type="Boolean" />
+        <variable
+            name="event"
+            type="app.gkuroda.nptrialapplication.ui.fragment.poker.PokerItemEvent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +41,7 @@
             android:layout_marginVertical="8dp"
             android:ems="10"
             android:hint="値を入力"
+            android:onTextChanged="@{(text, start, before, count) -> event.onTextChange(itemOrderNumber, itemNumber, text)}"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
