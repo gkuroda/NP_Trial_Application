@@ -3,7 +3,7 @@ package app.gkuroda.nptrialapplication.api
 import com.squareup.moshi.Json
 
 data class PokerResponse(
-    @Json(name = "result")
+    @Json(name = "results")
     val result: List<PokerResponseItem>
 )
 
