@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.gkuroda.nptrialapplication.dagger.viewModel.ViewModelFactory
 import app.gkuroda.nptrialapplication.databinding.FragmentPokerBinding
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 import javax.inject.Inject
 
 class PokerFragment : Fragment() {
@@ -23,6 +26,8 @@ class PokerFragment : Fragment() {
 
     lateinit var recyclerViewAdapter: PokerHandRequestRecyclerViewAdapter
 
+    private val disposable = CompositeDisposable()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +39,8 @@ class PokerFragment : Fragment() {
         viewModel = viewModelFactory.get(this)
         setUpRecyclerView()
         setUpButtonEvent()
+
+        subscribeViewModel()
 
         return binding.root
     }
@@ -55,11 +62,28 @@ class PokerFragment : Fragment() {
         }
 
         binding.requestResultButton.setOnClickListener {
-            for (i in 0..binding.recyclerView.childCount) {
-                Log.e("tag", "${binding.recyclerView.findViewHolderForLayoutPosition(i)}")
-            }
-
+            viewModel.requestPokerHand(recyclerViewAdapter.orderList)
         }
+
+    }
+
+    /**
+     * Viewmodelの値の更新を監視します
+     */
+    private fun subscribeViewModel() {
+        viewModel.pokerResult
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.e("tag", "result $it")
+            }
+            .addTo(disposable)
+
+        viewModel.pokerError
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.e("tag", "error $it")
+            }
+            .addTo(disposable)
     }
 
 

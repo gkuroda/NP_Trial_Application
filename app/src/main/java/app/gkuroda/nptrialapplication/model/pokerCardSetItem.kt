@@ -20,4 +20,10 @@ data class PokerCardSetItem(
         return this
     }
 
+    /**
+     * 現在のカード内容を1行にまとめます
+     */
+    fun toOneLineString(): String =
+        "$firstCard $secondCard $thirdCard $fourthCard $fifthCard"
+
 }
