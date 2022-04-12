@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
-    private val testText: String
+    private val baseApiPath: String
 ) : ViewModel() {
     init {
-        Log.e("tag", "$testText")
+        Log.e("tag", "$baseApiPath")
     }
 
 }

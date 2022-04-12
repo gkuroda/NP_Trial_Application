@@ -2,4 +2,6 @@
     <string name="app_name">NP Trial Application</string>
     <string name="title_poker">Poker</string>
     <string name="title_history">履歴</string>
+
+    <string name="api_base_url">http://p0kerhands.herokuapp.com/</string>
 </resources>
