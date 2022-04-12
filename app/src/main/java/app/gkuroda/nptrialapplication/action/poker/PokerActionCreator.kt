@@ -2,7 +2,8 @@ package app.gkuroda.nptrialapplication.action.poker
 
 import app.gkuroda.nptrialapplication.Dispatcher
 import app.gkuroda.nptrialapplication.LifecycleSensitiveActionCreator
-import app.gkuroda.nptrialapplication.api.SearchResponse
+import app.gkuroda.nptrialapplication.api.PokerResponse
+import app.gkuroda.nptrialapplication.model.PokerRequestModel
 import app.gkuroda.nptrialapplication.repository.PokerRepository
 import com.github.kittinunf.result.Result
 import io.reactivex.rxjava3.kotlin.addTo
@@ -12,10 +13,10 @@ class PokerActionCreator(
     private val dispatcher: Dispatcher,
     private val pokerRepository: PokerRepository
 ) : LifecycleSensitiveActionCreator(), PokerActionCreatable {
-    override fun getPokerResult(queryString: String) {
-        pokerRepository.getPokerResult(queryString)
+    override fun getPokerResult(pokerRequestModel: PokerRequestModel) {
+        pokerRepository.getPokerResult(pokerRequestModel)
             .subscribeOn(Schedulers.io())
-            .map<Result<SearchResponse, Exception>> {
+            .map<Result<PokerResponse, Exception>> {
                 Result.success(it)
             }
             .onErrorReturn {

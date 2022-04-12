@@ -2,14 +2,13 @@ package app.gkuroda.nptrialapplication.store
 
 import app.gkuroda.nptrialapplication.Dispatcher
 import app.gkuroda.nptrialapplication.action.Action
-import app.gkuroda.nptrialapplication.api.SearchResponse
+import app.gkuroda.nptrialapplication.api.PokerResponse
 import com.github.kittinunf.result.Result
 import com.jakewharton.rxrelay3.BehaviorRelay
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.lang.Exception
 import javax.inject.Singleton
 
 @Singleton
@@ -19,7 +18,8 @@ class Store(private val dispatcher: Dispatcher) : StoreInterface {
 
     val disposable = CompositeDisposable()
 
-    override val pokerResult: BehaviorRelay<Result<SearchResponse, Exception>> = BehaviorRelay.create()
+    override val pokerResult: BehaviorRelay<Result<PokerResponse, Exception>> =
+        BehaviorRelay.create()
 
     init {
         subscribe()
